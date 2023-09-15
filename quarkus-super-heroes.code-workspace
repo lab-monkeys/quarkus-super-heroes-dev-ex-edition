@@ -1,0 +1,43 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../quarkus-super-heroes-ui"
+		},
+		{
+			"path": "../quarkus-super-heroes-rest-heroes"
+		},
+		{
+			"path": "../quarkus-super-heroes-rest-villains"
+		},
+		{
+			"path": "../quarkus-super-heroes-rest-fights"
+		},
+		{
+			"path": "../quarkus-super-heroes-events-statistics"
+		}
+	],
+	"extensions": {
+		"recommendations": [
+			"redhat.vscode-yaml",
+			"redhat.java",
+			"redhat.vscode-quarkus",
+			"redhat.vscode-openshift-connector",
+			"mhutchie.git-graph",
+			"eamodio.gitlens",
+			"streetsidesoftware.code-spell-checker",
+			"johnpapa.winteriscoming",
+			"cnshenj.vscode-task-manager",
+			"angular.ng-template",
+			"johnpapa.angular2",
+			"SonatypeCommunity.vscode-iq-plugin"
+		]
+	},
+	"settings": {
+		"workbench.colorTheme": "Winter is Coming (Light)",
+		"workbench.preferredDarkColorTheme": "Winter is Coming (Dark Blue)",
+		"workbench.preferredLightColorTheme": "Winter is Coming (Light)"
+	}
+}
