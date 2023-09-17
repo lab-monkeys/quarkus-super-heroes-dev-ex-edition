@@ -143,7 +143,7 @@ components:
       - tail
 - name: postgres
   container:
-    image: quay.io/sclorg/postgresql-15-c9s:c9s
+    image: image-registry.openshift-image-registry.svc:5000/che-dev-images/postgresql-15-c9s:c9s
     memoryRequest: 128M
     memoryLimit: 512M
     sourceMapping: /projects
@@ -173,7 +173,7 @@ components:
     memoryLimit: 256M
 - name: fights-kafka
   container:
-    image: quay.io/strimzi/kafka:0.34.0-kafka-3.4.0
+    image: image-registry.openshift-image-registry.svc:5000/che-dev-images/kafka:0.34.0-kafka-3.4.0
     env:
     - name: LOG_DIR
       value: /tmp/logs
