@@ -183,12 +183,17 @@ components:
       - name: kafka
         targetPort: 9092
         exposure: internal
-    command:
-      - sh
     args:
-      - '-c'
-      - >-
-        "export CLUSTER_ID=$(bin/kafka-storage.sh random-uuid) && bin/kafka-storage.sh format -t ${CLUSTER_ID} -c config/kraft/server.properties && bin/kafka-server-start.sh config/kraft/server.properties --override advertised.listeners=${KAFKA_ADVERTISED_LISTENERS}"
+      - '-f'
+      - /dev/null
+    command:
+      - tail
+    # command:
+    #   - sh
+    # args:
+    #   - '-c'
+    #   - >-
+    #     "export CLUSTER_ID=$(bin/kafka-storage.sh random-uuid) && bin/kafka-storage.sh format -t ${CLUSTER_ID} -c config/kraft/server.properties && bin/kafka-server-start.sh config/kraft/server.properties --override advertised.listeners=${KAFKA_ADVERTISED_LISTENERS}"
     memoryRequest: 128M
     memoryLimit: 768M
 - name: oc-cli
