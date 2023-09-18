@@ -49,7 +49,7 @@ projects:
 components:
 - name: dev-tools
   container: 
-    image: image-registry.openshift-image-registry.svc:5000/che-dev-images/dev-workspace-image:nested
+    image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/dev-workspace-image:nested
     memoryRequest: 1Gi
     memoryLimit: 6Gi
     cpuRequest: 500m
@@ -78,7 +78,7 @@ components:
         exposure: none
 - name: quarkus-runner
   container: 
-    image: image-registry.openshift-image-registry.svc:5000/che-dev-images/dev-workspace-image:nested
+    image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/dev-workspace-image:nested
     memoryRequest: 128M
     memoryLimit: 1Gi
     mountSources: true
@@ -123,7 +123,7 @@ components:
       - tail
 - name: node-runner
   container: 
-    image: image-registry.openshift-image-registry.svc:5000/che-dev-images/dev-workspace-image:nested
+    image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/dev-workspace-image:nested
     memoryRequest: 128M
     memoryLimit: 1Gi
     mountSources: true
@@ -143,7 +143,7 @@ components:
       - tail
 - name: postgres
   container:
-    image: image-registry.openshift-image-registry.svc:5000/che-dev-images/postgresql-15-c9s:c9s
+    image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/postgresql-15-c9s:c9s
     memoryRequest: 128M
     memoryLimit: 512M
     sourceMapping: /projects
@@ -173,7 +173,7 @@ components:
     memoryLimit: 256M
 - name: fights-kafka
   container:
-    image: image-registry.openshift-image-registry.svc:5000/che-dev-images/kafka:0.34.0-kafka-3.4.0
+    image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/kafka:0.34.0-kafka-3.4.0
     env:
     - name: LOG_DIR
       value: /tmp/logs
