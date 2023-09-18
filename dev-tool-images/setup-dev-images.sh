@@ -11,4 +11,3 @@ oc start-build dev-workspace-image-base -n quarkus-super-heroes-dev-images -w -F
 oc start-build dev-workspace-image-vfs -n quarkus-super-heroes-dev-images -w -F
 oc start-build dev-workspace-image-fuse -n quarkus-super-heroes-dev-images -w -F
 oc start-build dev-workspace-image-nested -n quarkus-super-heroes-dev-images -w -F
-oc start-build dev-podman-image -n quarkus-super-heroes-dev-images -w -F

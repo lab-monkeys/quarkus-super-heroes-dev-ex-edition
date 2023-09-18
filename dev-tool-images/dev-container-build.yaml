@@ -7,33 +7,8 @@ metadata:
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
-  name: dev-podman-image
-  namespace: quarkus-super-heroes-dev-images
----
-apiVersion: image.openshift.io/v1
-kind: ImageStream
-metadata:
   name: dev-workspace-image
   namespace: quarkus-super-heroes-dev-images
----
-apiVersion: build.openshift.io/v1
-kind: BuildConfig
-metadata:
-  name: dev-podman-image
-  namespace: quarkus-super-heroes-dev-images
-spec:
-  source:
-    git:
-      uri: https://github.com/lab-monkeys/quarkus-super-heroes-dev-ex-edition.git
-      ref: main
-    contextDir: "dev-tool-images"
-  strategy:
-    dockerStrategy:
-      dockerfilePath: "./podman-image.Containerfile"
-  output:
-    to:
-      kind: ImageStreamTag
-      name: dev-podman-image:latest
 ---
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
