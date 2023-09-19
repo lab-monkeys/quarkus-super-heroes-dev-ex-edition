@@ -76,6 +76,37 @@ components:
       - name: kubedock
         targetPort: 2475
         exposure: none
+- name: ui-runner
+  container: 
+    image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/dev-workspace-image:nested
+    memoryRequest: 128M
+    memoryLimit: 1Gi
+    mountSources: true
+    sourceMapping: /projects
+    volumeMounts:
+      - name: m2
+        path: /home/user/.m2
+    endpoints:
+      - name: https-ui
+        targetPort: 8080
+        exposure: public
+        protocol: https
+    env:
+      - name: DEBUG_PORT
+        value: '5858'
+      - name: JAVA_HOME 
+        value: /etc/alternatives/jre_17
+      - name: API_PORT
+        value: '8080'
+      - name: CORS_ORIGINS
+        value: "/.*/"
+      - name: CORS_METHODS
+        value: "GET,POST,DELETE"
+    args:
+      - '-f'
+      - /dev/null
+    command:
+      - tail
 - name: heroes-runner
   container:
     image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/dev-workspace-image:nested
@@ -194,7 +225,7 @@ components:
       - name: m2
         path: /home/user/.m2
     endpoints:
-      - name: https-fights
+      - name: https-stats
         targetPort: 8084
         exposure: public
         protocol: https
@@ -205,37 +236,6 @@ components:
         value: /etc/alternatives/jre_17
       - name: API_PORT
         value: '8084'
-      - name: CORS_ORIGINS
-        value: "/.*/"
-      - name: CORS_METHODS
-        value: "GET,POST,DELETE"
-    args:
-      - '-f'
-      - /dev/null
-    command:
-      - tail
-- name: ui-runner
-  container: 
-    image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/dev-workspace-image:nested
-    memoryRequest: 128M
-    memoryLimit: 1Gi
-    mountSources: true
-    sourceMapping: /projects
-    volumeMounts:
-      - name: m2
-        path: /home/user/.m2
-    endpoints:
-      - name: https-fights
-        targetPort: 8080
-        exposure: public
-        protocol: https
-    env:
-      - name: DEBUG_PORT
-        value: '5858'
-      - name: JAVA_HOME 
-        value: /etc/alternatives/jre_17
-      - name: API_PORT
-        value: '8080'
       - name: CORS_ORIGINS
         value: "/.*/"
       - name: CORS_METHODS
