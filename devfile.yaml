@@ -297,7 +297,7 @@ components:
     memoryLimit: 768M
 - name: otel-collector
   container:
-    image: docker.io/otel/opentelemetry-collector:0.75.0
+    image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/opentelemetry-collector:0.75.0
     sourceMapping: /projects
     args:
       - "--config=/projects/quarkus-super-heroes-dev-ex-edition/dev-init/otel-collector-config.yaml"
@@ -314,7 +314,7 @@ components:
     memoryLimit: 128M
 - name: jaeger
   container:
-    image: docker.io/jaegertracing/all-in-one:1
+    image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/jaegertracing-all-in-one:1
     sourceMapping: /projects
     args:
       - '-f'
@@ -335,7 +335,7 @@ components:
     memoryLimit: 128M
 - name: prometheus
   container:
-    image: quay.io/prometheus/prometheus:v2.43.0
+    image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/prometheus:v2.43.0
     sourceMapping: /projects
     args:
       - '-f'
