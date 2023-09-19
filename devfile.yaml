@@ -76,8 +76,8 @@ components:
       - name: kubedock
         targetPort: 2475
         exposure: none
-- name: quarkus-runner
-  container: 
+- name: heroes-runner
+  container:
     image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/dev-workspace-image:nested
     memoryRequest: 128M
     memoryLimit: 1Gi
@@ -87,7 +87,7 @@ components:
       - name: m2
         path: /home/user/.m2
     endpoints:
-      - name: https-quarkus
+      - name: https-heroes
         targetPort: 8081
         exposure: public
         protocol: https
@@ -103,15 +103,95 @@ components:
       - name: JAVA_HOME 
         value: /etc/alternatives/jre_17
       - name: API_PORT
-        value: '8080'
+        value: '8081'
       - name: DB_USER
-        value: postgres
+        value: superman
       - name: DB_PWD
-        value: postgres
+        value: superman
       - name: DB_HOST
         value: localhost
       - name: DB_SCHEMA
-        value: postgres
+        value: heroes_database
+      - name: CORS_ORIGINS
+        value: "/.*/"
+      - name: CORS_METHODS
+        value: "GET,POST,DELETE"
+- name: villains-runner
+  container:
+    image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/dev-workspace-image:nested
+    memoryRequest: 128M
+    memoryLimit: 1Gi
+    mountSources: true
+    sourceMapping: /projects
+    volumeMounts:
+      - name: m2
+        path: /home/user/.m2
+    endpoints:
+      - name: https-villains
+        targetPort: 8082
+        exposure: public
+        protocol: https
+      - name: debug
+        exposure: none
+        targetPort: 5858
+      - name: dt-socket
+        exposure: none
+        targetPort: 5005
+    env:
+      - name: DEBUG_PORT
+        value: '5858'
+      - name: JAVA_HOME 
+        value: /etc/alternatives/jre_17
+      - name: API_PORT
+        value: '8082'
+      - name: DB_USER
+        value: superbad
+      - name: DB_PWD
+        value: superbad
+      - name: DB_HOST
+        value: localhost
+      - name: DB_SCHEMA
+        value: villains_database
+      - name: CORS_ORIGINS
+        value: "/.*/"
+      - name: CORS_METHODS
+        value: "GET,POST,DELETE"
+- name: fights-runner
+  container: 
+    image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/dev-workspace-image:nested
+    memoryRequest: 128M
+    memoryLimit: 1Gi
+    mountSources: true
+    sourceMapping: /projects
+    volumeMounts:
+      - name: m2
+        path: /home/user/.m2
+    endpoints:
+      - name: https-fights
+        targetPort: 8083
+        exposure: public
+        protocol: https
+      - name: debug
+        exposure: none
+        targetPort: 5858
+      - name: dt-socket
+        exposure: none
+        targetPort: 5005
+    env:
+      - name: DEBUG_PORT
+        value: '5858'
+      - name: JAVA_HOME 
+        value: /etc/alternatives/jre_17
+      - name: API_PORT
+        value: '8083'
+      - name: DB_USER
+        value: superfight
+      - name: DB_PWD
+        value: superfight
+      - name: DB_HOST
+        value: localhost
+      - name: DB_SCHEMA
+        value: fights
       - name: CORS_ORIGINS
         value: "/.*/"
       - name: CORS_METHODS
@@ -121,7 +201,7 @@ components:
       - /dev/null
     command:
       - tail
-- name: node-runner
+- name: stats-runner
   container: 
     image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/dev-workspace-image:nested
     memoryRequest: 128M
@@ -129,13 +209,67 @@ components:
     mountSources: true
     sourceMapping: /projects
     volumeMounts:
-      - name: npm
-        path: /home/user/.npm
+      - name: m2
+        path: /home/user/.m2
     endpoints:
-      - name: node
-        targetPort: 4200
+      - name: https-fights
+        targetPort: 8084
         exposure: public
         protocol: https
+      - name: debug
+        exposure: none
+        targetPort: 5858
+      - name: dt-socket
+        exposure: none
+        targetPort: 5005
+    env:
+      - name: DEBUG_PORT
+        value: '5858'
+      - name: JAVA_HOME 
+        value: /etc/alternatives/jre_17
+      - name: API_PORT
+        value: '8084'
+      - name: CORS_ORIGINS
+        value: "/.*/"
+      - name: CORS_METHODS
+        value: "GET,POST,DELETE"
+    args:
+      - '-f'
+      - /dev/null
+    command:
+      - tail
+- name: ui-runner
+  container: 
+    image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/dev-workspace-image:nested
+    memoryRequest: 128M
+    memoryLimit: 1Gi
+    mountSources: true
+    sourceMapping: /projects
+    volumeMounts:
+      - name: m2
+        path: /home/user/.m2
+    endpoints:
+      - name: https-fights
+        targetPort: 8080
+        exposure: public
+        protocol: https
+      - name: debug
+        exposure: none
+        targetPort: 5858
+      - name: dt-socket
+        exposure: none
+        targetPort: 5005
+    env:
+      - name: DEBUG_PORT
+        value: '5858'
+      - name: JAVA_HOME 
+        value: /etc/alternatives/jre_17
+      - name: API_PORT
+        value: '8080'
+      - name: CORS_ORIGINS
+        value: "/.*/"
+      - name: CORS_METHODS
+        value: "GET,POST,DELETE"
     args:
       - '-f'
       - /dev/null
@@ -160,14 +294,14 @@ components:
       path: /var/lib/pgsql/data
     endpoints:
       - name: postgres
-        targetPort: 27017
+        targetPort: 5432
         exposure: internal
 - name: fights-db
   container:
     image: bitnami/mongodb:5.0
     endpoints:
       - name: fights-db
-        targetPort: 5432
+        targetPort: 27017
         exposure: internal
     memoryRequest: 64M
     memoryLimit: 256M
@@ -217,50 +351,6 @@ components:
     size: 2Gi
   name: pgdata
 commands:
-- exec:
-    commandLine: mvn package
-    component: dev-tools
-    group:
-      isDefault: true
-      kind: build
-    workingDir: '/projects/che-demo-app-service'
-  id: package
-- exec:
-    commandLine: mvn package -Dnative -Dmaven.test.skip -Dquarkus.native.native-image-xmx=2G
-    component: dev-tools
-    group:
-      kind: build
-    label: Package Native
-    workingDir: '/projects/che-demo-app-service'
-  id: package-native
-- exec:
-    commandLine: 'quarkus dev -Dmaven.repo.local=/home/user/.m2/repository -Dquarkus.http.host=0.0.0.0'
-    component: quarkus-runner
-    hotReloadCapable: true
-    group:
-      isDefault: true
-      kind: run
-    label: Start Quarkus Development mode (Hot reload)
-    workingDir: '/projects/che-demo-app-service'
-  id: quarkus-dev-mode
-- exec:
-    commandLine: '/projects/che-demo-app/setUiEnv.sh -f=/projects/che-demo-app-ui/src/environments/environment.development.ts -s=/projects/che-demo-app-ui/env.dev -c=quarkus-runner -p=8080 -e=https-quarkus -v=backendApiUrl && npm install && ng serve --disable-host-check --host 0.0.0.0'
-    component: node-runner
-    hotReloadCapable: true
-    group:
-      isDefault: true
-      kind: run
-    label: Start NodeJS Development mode (Hot reload)
-    workingDir: '/projects/che-demo-app-ui'
-  id: node-dev-mode
-- exec:
-    commandLine: "kubedock server --port-forward"
-    component: dev-tools
-    group:
-      kind: run
-    label: Kubedock
-    workingDir: '/'
-  id: kubedock
 - apply:
     component: oc-cli
     label: Copy OpenShift CLI
