@@ -348,6 +348,9 @@ components:
         targetPort: 9090
     memoryRequest: 32M
     memoryLimit: 128M
+    volumeMounts:
+      - name: prometheus-data
+        path: /prometheus
 - name: oc-cli
   container:
     args:
@@ -373,6 +376,9 @@ components:
 - volume:
     size: 2Gi
   name: pgdata
+- volume:
+    size: 2Gi
+  name: prometheus-data
 commands:
 - apply:
     component: oc-cli
