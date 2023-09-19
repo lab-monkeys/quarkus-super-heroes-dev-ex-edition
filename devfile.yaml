@@ -96,7 +96,7 @@ components:
         value: '5858'
       - name: JAVA_HOME 
         value: /etc/alternatives/jre_17
-      - name: API_PORT
+      - name: UI_HTTP_PORT
         value: '8080'
       - name: CORS_ORIGINS
         value: "/.*/"
@@ -295,6 +295,59 @@ components:
         /opt/kafka/bin/kafka-storage.sh format -t $(/opt/kafka/bin/kafka-storage.sh random-uuid) -c /opt/kafka/config/kraft/server.properties && bin/kafka-server-start.sh /opt/kafka/config/kraft/server.properties --override advertised.listeners=${KAFKA_ADVERTISED_LISTENERS}
     memoryRequest: 128M
     memoryLimit: 768M
+- name: otel-collector
+  container:
+    image: otel/opentelemetry-collector:0.75.0
+    sourceMapping: /projects
+    # args:
+    #   - "--config=/projects/quarkus-super-heroes-dev-ex-edition/dev-init/otel-collector-config.yml"
+    args:
+      - '-f'
+      - /dev/null
+    command:
+      - tail
+    endpoints:
+      - exposure: internal
+        name: otlp-receiver
+        targetPort: 4317
+    memoryRequest: 32M
+    memoryLimit: 128M
+- name: jaeger
+  container:
+    image: jaegertracing/all-in-one:1
+    sourceMapping: /projects
+    args:
+      - '-f'
+      - /dev/null
+    command:
+      - tail
+    endpoints:
+      - exposure: internal
+        name: jaeger-16686
+        targetPort: 16686
+      - exposure: internal
+        name: jaeger-14268
+        targetPort: 14268
+      - exposure: internal
+        name: jaeger-14250
+        targetPort: 14250
+    memoryRequest: 32M
+    memoryLimit: 128M
+- name: prometheus
+  container:
+    image: quay.io/prometheus/prometheus:v2.43.0
+    sourceMapping: /projects
+    args:
+      - '-f'
+      - /dev/null
+    command:
+      - tail
+    endpoints:
+      - exposure: internal
+        name: prometheus
+        targetPort: 9090
+    memoryRequest: 32M
+    memoryLimit: 128M
 - name: oc-cli
   container:
     args:
