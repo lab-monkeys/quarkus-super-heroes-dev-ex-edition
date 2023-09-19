@@ -316,11 +316,11 @@ components:
   container:
     image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/jaegertracing-all-in-one:1
     sourceMapping: /projects
-    args:
-      - '-f'
-      - /dev/null
-    command:
-      - tail
+    # args:
+    #   - '-f'
+    #   - /dev/null
+    # command:
+    #   - tail
     endpoints:
       - exposure: internal
         name: jaeger-16686
@@ -337,11 +337,11 @@ components:
   container:
     image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/prometheus:v2.43.0
     sourceMapping: /projects
-    args:
-      - '-f'
-      - /dev/null
-    command:
-      - tail
+    # args:
+    #   - '-f'
+    #   - /dev/null
+    # command:
+    #   - tail
     endpoints:
       - exposure: internal
         name: prometheus

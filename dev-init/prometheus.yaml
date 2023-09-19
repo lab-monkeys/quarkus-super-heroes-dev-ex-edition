@@ -8,34 +8,60 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
-  - job_name: k8s-discovery
-    kubernetes_sd_configs:
-      - role: pod
-        namespaces:
-          own_namespace: true
-    relabel_configs:
-      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
-        action: keep
-        regex: true
-      
-      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
-        action: replace
-        target_label: __metrics_path__
-        regex: (.+)
-      
-      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
-        action: replace
-        regex: ([^:]+)(?::\d+)?;(\d+)
-        replacement: $1:$2
-        target_label: __address__
-      
-      - action: labelmap
-        regex: __meta_kubernetes_pod_label_(.+)
-      
-      - source_labels: [__meta_kubernetes_namespace]
-        action: replace
-        target_label: kubernetes_namespace
-      
-      - source_labels: [__meta_kubernetes_pod_name]
-        action: replace
-        target_label: kubernetes_pod_name
+  - job_name: apicurio
+    honor_labels: true
+    static_configs:
+      - targets: ['localhost:8086']
+        labels:
+          app: apicurio
+          application: fights-service
+          system: quarkus-super-heroes
+
+  - job_name: heroes
+    metrics_path: /q/metrics
+    honor_labels: true
+    static_configs:
+      - targets: ['localhost:8083']
+        labels:
+          app: rest-heroes
+          application: heroes-service
+          system: quarkus-super-heroes
+
+  - job_name: villains
+    metrics_path: /q/metrics
+    honor_labels: true
+    static_configs:
+      - targets: ['localhost:8084']
+        labels:
+          app: rest-villains
+          application: villains-service
+          system: quarkus-super-heroes
+
+  - job_name: fights
+    metrics_path: /q/metrics
+    honor_labels: true
+    static_configs:
+      - targets: ['localhost:8082']
+        labels:
+          app: rest-fights
+          application: fights-service
+          system: quarkus-super-heroes
+
+  - job_name: event-stats
+    metrics_path: /q/metrics
+    honor_labels: true
+    static_configs:
+      - targets: ['localhost:8085']
+        labels:
+          app: event-statistics
+          application: event-stats
+          system: quarkus-super-heroes
+
+  - job_name: ui-super-heroes
+    honor_labels: true
+    static_configs:
+      - targets: ['localhost:8080']
+        labels:
+          app: ui-super-heroes
+          application: super-heroes
+          system: quarkus-super-heroes
