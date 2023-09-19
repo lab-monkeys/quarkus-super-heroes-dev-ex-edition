@@ -297,7 +297,7 @@ components:
     memoryLimit: 768M
 - name: otel-collector
   container:
-    image: otel/opentelemetry-collector:0.75.0
+    image: docker.io/otel/opentelemetry-collector:0.75.0
     sourceMapping: /projects
     # args:
     #   - "--config=/projects/quarkus-super-heroes-dev-ex-edition/dev-init/otel-collector-config.yml"
@@ -314,7 +314,7 @@ components:
     memoryLimit: 128M
 - name: jaeger
   container:
-    image: jaegertracing/all-in-one:1
+    image: docker.io/jaegertracing/all-in-one:1
     sourceMapping: /projects
     args:
       - '-f'
