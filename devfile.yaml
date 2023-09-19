@@ -91,12 +91,6 @@ components:
         targetPort: 8081
         exposure: public
         protocol: https
-      - name: debug
-        exposure: none
-        targetPort: 5858
-      - name: dt-socket
-        exposure: none
-        targetPort: 5005
     env:
       - name: DEBUG_PORT
         value: '5858'
@@ -131,12 +125,6 @@ components:
         targetPort: 8082
         exposure: public
         protocol: https
-      - name: debug
-        exposure: none
-        targetPort: 5858
-      - name: dt-socket
-        exposure: none
-        targetPort: 5005
     env:
       - name: DEBUG_PORT
         value: '5858'
@@ -171,12 +159,6 @@ components:
         targetPort: 8083
         exposure: public
         protocol: https
-      - name: debug
-        exposure: none
-        targetPort: 5858
-      - name: dt-socket
-        exposure: none
-        targetPort: 5005
     env:
       - name: DEBUG_PORT
         value: '5858'
@@ -216,12 +198,6 @@ components:
         targetPort: 8084
         exposure: public
         protocol: https
-      - name: debug
-        exposure: none
-        targetPort: 5858
-      - name: dt-socket
-        exposure: none
-        targetPort: 5005
     env:
       - name: DEBUG_PORT
         value: '5858'
@@ -253,12 +229,6 @@ components:
         targetPort: 8080
         exposure: public
         protocol: https
-      - name: debug
-        exposure: none
-        targetPort: 5858
-      - name: dt-socket
-        exposure: none
-        targetPort: 5005
     env:
       - name: DEBUG_PORT
         value: '5858'
