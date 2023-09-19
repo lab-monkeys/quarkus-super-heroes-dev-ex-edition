@@ -299,13 +299,13 @@ components:
   container:
     image: docker.io/otel/opentelemetry-collector:0.75.0
     sourceMapping: /projects
-    # args:
-    #   - "--config=/projects/quarkus-super-heroes-dev-ex-edition/dev-init/otel-collector-config.yml"
     args:
-      - '-f'
-      - /dev/null
-    command:
-      - tail
+      - "--config=/projects/quarkus-super-heroes-dev-ex-edition/dev-init/otel-collector-config.yaml"
+    # args:
+    #   - '-f'
+    #   - /dev/null
+    # command:
+    #   - tail
     endpoints:
       - exposure: internal
         name: otlp-receiver
