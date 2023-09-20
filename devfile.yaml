@@ -337,11 +337,13 @@ components:
   container:
     image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/prometheus:v2.43.0
     sourceMapping: /projects
-    # args:
-    #   - '-f'
-    #   - /dev/null
-    # command:
-    #   - tail
+    args:
+      - '--config.file=/projects/quarkus-super-heroes-dev-ex-edition/dev-init/prometheus.yaml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    command:
+      - '/bin/prometheus'
     endpoints:
       - exposure: internal
         name: prometheus
