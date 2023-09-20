@@ -24,6 +24,9 @@ RUN microdnf --disableplugin=subscription-manager install -y procps-ng openssl c
   chmod -R g=u /etc/passwd /etc/group /etc/subuid /etc/subgid ; \
   npm install -g @angular/cli ; \
   npm install -g serverless ; \
+  mkdir -p ${JBANG_DIR} ; \
+  curl -Ls https://sh.jbang.dev | bash -s - app setup ; \
+  ln -s ${JBANG_DIR}/bin/jbang /usr/local/tools/bin/jbang ; \
   chgrp -R 0 /home ; \
   chmod +x /entrypoint.sh ; \
   chmod -R g=u /home ${WORK_DIR}
