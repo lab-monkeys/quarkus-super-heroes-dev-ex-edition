@@ -361,6 +361,18 @@ commands:
     component: oc-cli
     label: Copy OpenShift CLI
   id: cp-oc-cli
+- exec:
+    commandLine: psql -f initialize-tables.sql
+    component: postgres
+    workingDir: '/projects/quarkus-super-heroes-dev-ex-edition/dev-init/heroes/'
+    label: 'Initialize Heroes Database'
+  id: create-heroes-db
+- exec:
+    commandLine: psql -f initialize-tables.sql
+    component: postgres
+    workingDir: '/projects/quarkus-super-heroes-dev-ex-edition/dev-init/villains/'
+    label: 'Initialize Villains Database'
+  id: create-villains-db
 events:
   preStart:
     - cp-oc-cli

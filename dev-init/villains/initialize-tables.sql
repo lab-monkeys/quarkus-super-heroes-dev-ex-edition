@@ -1,3 +1,13 @@
+DROP USER IF EXISTS superbad;
+CREATE USER superbad WITH PASSWORD 'superbad';
+
+DROP DATABASE IF EXISTS villains_database;
+CREATE DATABASE villains_database;
+
+GRANT ALL PRIVILEGES ON villains_database TO superbad;
+
+\c villains_database;
+
 DROP TABLE IF EXISTS Villain;
 DROP SEQUENCE IF EXISTS villain_seq;
 

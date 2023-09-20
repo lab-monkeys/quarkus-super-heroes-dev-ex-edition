@@ -1,3 +1,13 @@
+DROP USER IF EXISTS superman;
+CREATE USER superman WITH PASSWORD 'superman';
+
+DROP DATABASE IF EXISTS heroes_database;
+CREATE DATABASE heroes_database;
+
+GRANT ALL PRIVILEGES ON heroes_database TO superman;
+
+\c heroes_database;
+
 DROP TABLE IF EXISTS Hero;
 DROP SEQUENCE IF EXISTS hero_seq;
 
