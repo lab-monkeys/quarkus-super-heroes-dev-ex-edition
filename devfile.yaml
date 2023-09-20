@@ -121,7 +121,7 @@ components:
         value: '5858'
       - name: JAVA_HOME 
         value: /etc/alternatives/jre_17
-      - name: API_PORT
+      - name: APP_PORT
         value: '8081'
       - name: DB_USER
         value: superman
@@ -155,7 +155,7 @@ components:
         value: '5858'
       - name: JAVA_HOME 
         value: /etc/alternatives/jre_17
-      - name: API_PORT
+      - name: APP_PORT
         value: '8082'
       - name: DB_USER
         value: superbad
@@ -189,7 +189,7 @@ components:
         value: '5858'
       - name: JAVA_HOME 
         value: /etc/alternatives/jre_17
-      - name: API_PORT
+      - name: APP_PORT
         value: '8083'
       - name: DB_USER
         value: superfight
@@ -228,7 +228,7 @@ components:
         value: '5858'
       - name: JAVA_HOME 
         value: /etc/alternatives/jre_17
-      - name: API_PORT
+      - name: APP_PORT
         value: '8084'
       - name: CORS_ORIGINS
         value: "/.*/"
