@@ -63,8 +63,6 @@ components:
       value: "true"
     - name: TESTCONTAINERS_CHECKS_DISABLE
       value: "true"
-    - name: DOCKER_HOST
-      value: "tcp://127.0.0.1:2475"
     - name: VSCODE_DEFAULT_WORKSPACE
       value: "/projects/quarkus-super-heroes-dev-ex-edition/quarkus-super-heroes.code-workspace"
     volumeMounts:
@@ -72,10 +70,6 @@ components:
       path: /home/user/.m2
     - name: npm
       path: /home/user/.npm
-    endpoints:
-      - name: kubedock
-        targetPort: 2475
-        exposure: none
 - name: ui-runner
   container: 
     image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/dev-workspace-image:nested
@@ -295,42 +289,23 @@ components:
         /opt/kafka/bin/kafka-storage.sh format -t $(/opt/kafka/bin/kafka-storage.sh random-uuid) -c /opt/kafka/config/kraft/server.properties && bin/kafka-server-start.sh /opt/kafka/config/kraft/server.properties --override advertised.listeners=${KAFKA_ADVERTISED_LISTENERS}
     memoryRequest: 128M
     memoryLimit: 768M
-# - name: otel-collector
-#   container:
-#     image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/opentelemetry-collector:0.75.0
-#     sourceMapping: /projects
-#     args:
-#       - "--config=/projects/quarkus-super-heroes-dev-ex-edition/dev-init/otel-collector-config.yaml"
-#     # args:
-#     #   - '-f'
-#     #   - /dev/null
-#     # command:
-#     #   - tail
-#     endpoints:
-#       - exposure: internal
-#         name: otlp-receiver
-#         targetPort: 4317
-#     memoryRequest: 32M
-#     memoryLimit: 128M
 - name: jaeger
   container:
     image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/jaegertracing-all-in-one:1
     sourceMapping: /projects
-    # args:
-    #   - '-f'
-    #   - /dev/null
-    # command:
-    #   - tail
     endpoints:
-      - exposure: internal
-        name: jaeger-16686
+      - exposure: public
+        name: jaeger-ui
         targetPort: 16686
       - exposure: internal
-        name: jaeger-14268
+        name: jaeger-thrift
         targetPort: 14268
       - exposure: internal
-        name: jaeger-14250
+        name: jaeger-proto
         targetPort: 14250
+      - exposure: internal
+        name: otlp-receiver
+        targetPort: 4317
     memoryRequest: 32M
     memoryLimit: 128M
 - name: prometheus
@@ -345,7 +320,7 @@ components:
     command:
       - '/bin/prometheus'
     endpoints:
-      - exposure: internal
+      - exposure: public
         name: prometheus
         targetPort: 9090
     memoryRequest: 32M
