@@ -1,19 +1,11 @@
-DROP USER IF EXISTS superbad;
-CREATE USER superbad WITH PASSWORD 'superbad';
-
 DROP DATABASE IF EXISTS villains_database;
 CREATE DATABASE villains_database;
 
-GRANT ALL PRIVILEGES ON villains_database TO superbad;
-
 \c villains_database;
-
-DROP TABLE IF EXISTS Villain;
-DROP SEQUENCE IF EXISTS villain_seq;
 
 CREATE SEQUENCE villain_seq START 1 INCREMENT 50;
 
-CREATE TABLE Villain (
+CREATE TABLE villain (
   id int8 NOT NULL,
   level int4 NOT NULL,
   name VARCHAR(50) NOT NULL,
@@ -22,6 +14,13 @@ CREATE TABLE Villain (
   powers TEXT,
   PRIMARY KEY (id)
 );
+
+DROP USER IF EXISTS superbad;
+CREATE USER superbad WITH PASSWORD 'superbad';
+GRANT ALL PRIVILEGES ON DATABASE villains_database TO superbad;
+GRANT ALL PRIVILEGES ON SCHEMA public TO superbad;
+GRANT ALL PRIVILEGES ON TABLE villain TO superbad;
+GRANT ALL PRIVILEGES ON SEQUENCE villain_seq TO superbad;
 
 -- A 100 record random sample from https://github.com/quarkusio/quarkus-super-heroes/blob/characterdata/all-villains.sql
 INSERT INTO villain(id, name, otherName, picture, powers, level)
