@@ -65,32 +65,190 @@ components:
       value: "true"
     - name: VSCODE_DEFAULT_WORKSPACE
       value: "/projects/quarkus-super-heroes-dev-ex-edition/quarkus-super-heroes.code-workspace"
+    - name: UI_HTTP_PORT
+      value: 8080
+    - name: HEROES_PORT
+      value: 8081
+    - name: VILLAINS_PORT
+      value: 8082
+    - name: FIGHTS_PORT
+      value: 8083
     volumeMounts:
     - name: m2
       path: /home/user/.m2
     - name: npm
       path: /home/user/.npm
+- name: ui-runner
+  container: 
+    image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/dev-workspace-image:nested
+    memoryRequest: 128M
+    memoryLimit: 1Gi
+    mountSources: true
+    sourceMapping: /projects
+    volumeMounts:
+      - name: m2
+        path: /home/user/.m2
     endpoints:
       - name: https-ui
         targetPort: 8080
         exposure: public
         protocol: https
+    env:
+      - name: DEBUG_PORT
+        value: '5005'
+      - name: JAVA_HOME 
+        value: /etc/alternatives/jre_17
+      - name: UI_HTTP_PORT
+        value: '8080'
+      - name: CORS_ORIGINS
+        value: "/.*/"
+      - name: CORS_METHODS
+        value: "GET,POST,DELETE"
+    args:
+      - '-f'
+      - /dev/null
+    command:
+      - tail
+- name: heroes-runner
+  container:
+    image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/dev-workspace-image:nested
+    memoryRequest: 128M
+    memoryLimit: 1Gi
+    mountSources: true
+    sourceMapping: /projects
+    volumeMounts:
+      - name: m2
+        path: /home/user/.m2
+    endpoints:
       - name: https-heroes
         targetPort: 8081
         exposure: public
         protocol: https
+    env:
+      - name: DEBUG_PORT
+        value: '5006'
+      - name: JAVA_HOME 
+        value: /etc/alternatives/jre_17
+      - name: APP_PORT
+        value: '8081'
+      - name: DB_USER
+        value: superman
+      - name: DB_PWD
+        value: superman
+      - name: DB_HOST
+        value: localhost
+      - name: DB_SCHEMA
+        value: heroes_database
+      - name: CORS_ORIGINS
+        value: "/.*/"
+      - name: CORS_METHODS
+        value: "GET,POST,DELETE"
+- name: villains-runner
+  container:
+    image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/dev-workspace-image:nested
+    memoryRequest: 128M
+    memoryLimit: 1Gi
+    mountSources: true
+    sourceMapping: /projects
+    volumeMounts:
+      - name: m2
+        path: /home/user/.m2
+    endpoints:
       - name: https-villains
         targetPort: 8082
         exposure: public
         protocol: https
+    env:
+      - name: DEBUG_PORT
+        value: '5007'
+      - name: JAVA_HOME 
+        value: /etc/alternatives/jre_17
+      - name: APP_PORT
+        value: '8082'
+      - name: DB_USER
+        value: superbad
+      - name: DB_PWD
+        value: superbad
+      - name: DB_HOST
+        value: localhost
+      - name: DB_SCHEMA
+        value: villains_database
+      - name: CORS_ORIGINS
+        value: "/.*/"
+      - name: CORS_METHODS
+        value: "GET,POST,DELETE"
+- name: fights-runner
+  container: 
+    image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/dev-workspace-image:nested
+    memoryRequest: 128M
+    memoryLimit: 1Gi
+    mountSources: true
+    sourceMapping: /projects
+    volumeMounts:
+      - name: m2
+        path: /home/user/.m2
+    endpoints:
       - name: https-fights
         targetPort: 8083
         exposure: public
         protocol: https
+    env:
+      - name: DEBUG_PORT
+        value: '5008'
+      - name: JAVA_HOME 
+        value: /etc/alternatives/jre_17
+      - name: APP_PORT
+        value: '8083'
+      - name: HERO_HOST
+        value: localhost
+      - name: DB_USER
+        value: superfight
+      - name: DB_PWD
+        value: superfight
+      - name: DB_HOST
+        value: localhost
+      - name: DB_SCHEMA
+        value: fights
+      - name: CORS_ORIGINS
+        value: "/.*/"
+      - name: CORS_METHODS
+        value: "GET,POST,DELETE"
+    args:
+      - '-f'
+      - /dev/null
+    command:
+      - tail
+- name: stats-runner
+  container: 
+    image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/dev-workspace-image:nested
+    memoryRequest: 128M
+    memoryLimit: 1Gi
+    mountSources: true
+    sourceMapping: /projects
+    volumeMounts:
+      - name: m2
+        path: /home/user/.m2
+    endpoints:
       - name: https-stats
         targetPort: 8084
         exposure: public
         protocol: https
+    env:
+      - name: DEBUG_PORT
+        value: '5858'
+      - name: JAVA_HOME 
+        value: /etc/alternatives/jre_17
+      - name: APP_PORT
+        value: '8084'
+      - name: CORS_ORIGINS
+        value: "/.*/"
+      - name: CORS_METHODS
+        value: "GET,POST,DELETE"
+    args:
+      - '-f'
+      - /dev/null
+    command:
+      - tail
 - name: postgres
   container:
     image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/postgresql-15-c9s:c9s
@@ -216,19 +374,19 @@ commands:
 - exec:
     commandLine: psql -f initialize-tables.sql
     component: postgres
-    workingDir: '${PROJECTS_ROOT}/quarkus-super-heroes-dev-ex-edition/dev-init/heroes/'
+    workingDir: '/projects/quarkus-super-heroes-dev-ex-edition/dev-init/heroes/'
     label: 'Initialize Heroes Database'
   id: create-heroes-db
 - exec:
     commandLine: psql -f initialize-tables.sql
     component: postgres
-    workingDir: '${PROJECTS_ROOT}/quarkus-super-heroes-dev-ex-edition/dev-init/villains/'
+    workingDir: '/projects/quarkus-super-heroes-dev-ex-edition/dev-init/villains/'
     label: 'Initialize Villains Database'
   id: create-villains-db
 - exec:
-    commandLine: ${PROJECT_SOURCE}/dev-init/dev-env.sh --heroes
-    component: dev-tools
-    workingDir: '${PROJECTS_ROOT}/quarkus-super-heroes-rest-heroes'
+    commandLine: quarkus dev -Dquarkus.analytics.disabled=false -Dmaven.repo.local=/home/user/.m2/repository -Dquarkus.http.host=0.0.0.0 -Dmaven.test.skip -Ddebug=${DEBUG_PORT}
+    component: heroes-runner
+    workingDir: '/projects/quarkus-super-heroes-rest-heroes'
     label: 'Heroes Service - Live Dev Mode'
     hotReloadCapable: true
     group:
@@ -236,9 +394,9 @@ commands:
       kind: run
   id: heroes-service-dev-mode
 - exec:
-    commandLine: ${PROJECT_SOURCE}/dev-init/dev-env.sh --villains
-    component: dev-tools
-    workingDir: '${PROJECTS_ROOT}/quarkus-super-heroes-rest-villains'
+    commandLine: quarkus dev -Dquarkus.analytics.disabled=false -Dmaven.repo.local=/home/user/.m2/repository -Dquarkus.http.host=0.0.0.0 -Dmaven.test.skip -Ddebug=${DEBUG_PORT}
+    component: villains-runner
+    workingDir: '/projects/quarkus-super-heroes-rest-villains'
     label: 'Villains Service - Live Dev Mode'
     hotReloadCapable: true
     group:
@@ -246,9 +404,9 @@ commands:
       kind: run
   id: villains-service-dev-mode
 - exec:
-    commandLine: ${PROJECT_SOURCE}/dev-init/dev-env.sh --fights
-    component: dev-tools
-    workingDir: '${PROJECTS_ROOT}/quarkus-super-heroes-rest-fights'
+    commandLine: quarkus dev -Dquarkus.analytics.disabled=false -Dmaven.repo.local=/home/user/.m2/repository -Dquarkus.http.host=0.0.0.0 -Dmaven.test.skip -Ddebug=${DEBUG_PORT}
+    component: fights-runner
+    workingDir: '/projects/quarkus-super-heroes-rest-fights'
     label: 'Fights Service - Live Dev Mode'
     hotReloadCapable: true
     group:
@@ -256,9 +414,9 @@ commands:
       kind: run
   id: fights-service-dev-mode
 - exec:
-    commandLine: ${PROJECT_SOURCE}/dev-init/dev-env.sh --ui
-    component: dev-tools
-    workingDir: '${PROJECTS_ROOT}/quarkus-super-heroes-rest-fights'
+    commandLine: quarkus dev -Dquarkus.analytics.disabled=false -Dmaven.repo.local=/home/user/.m2/repository -Dquarkus.http.host=0.0.0.0 -Dmaven.test.skip -Ddebug=${DEBUG_PORT}
+    component: ui-runner
+    workingDir: '/projects/quarkus-super-heroes-rest-fights'
     label: 'Heroes UI - Live Dev Mode'
     hotReloadCapable: true
     group:
