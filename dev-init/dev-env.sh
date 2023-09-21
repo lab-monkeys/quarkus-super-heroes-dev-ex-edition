@@ -5,7 +5,6 @@ export HEROES_PORT=8081
 export VILLAINS_PORT=8082
 export FIGHTS_PORT=8083
 
-
 function setUiEnv() {
   export DEBUG_PORT=5005
   export APP_PORT=${UI_HTTP_PORT}
@@ -25,9 +24,9 @@ function setHeroesEnv() {
 function setVillainsEnv() {
   export DEBUG_PORT=5006
   export APP_PORT=${VILLAINS_PORT}
-  export DB_USER=suberbad
-  export DB_PWD=suberbad
-  export DB_HOST=suberbad
+  export DB_USER=superbad
+  export DB_PWD=superbad
+  export DB_HOST=localhost
   export DB_SCHEMA=villains_database
   export CORS_ORIGINS="/.*/"
   export CORS_METHODS="GET,POST,DELETE"
