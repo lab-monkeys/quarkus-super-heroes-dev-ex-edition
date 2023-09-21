@@ -378,24 +378,40 @@ commands:
     component: heroes-runner
     workingDir: '/projects/quarkus-super-heroes-rest-heroes'
     label: 'Heroes Service - Live Dev Mode'
+    hotReloadCapable: true
+    group:
+      isDefault: true
+      kind: run
   id: heroes-service-dev-mode
 - exec:
     commandLine: quarkus dev -Dquarkus.analytics.disabled=false -Dmaven.repo.local=/home/user/.m2/repository -Dquarkus.http.host=0.0.0.0 -Dmaven.test.skip 
-    component: heroes-runner
+    component: villains-runner
     workingDir: '/projects/quarkus-super-heroes-rest-villains'
     label: 'Villains Service - Live Dev Mode'
+    hotReloadCapable: true
+    group:
+      isDefault: true
+      kind: run
   id: villains-service-dev-mode
 - exec:
     commandLine: quarkus dev -Dquarkus.analytics.disabled=false -Dmaven.repo.local=/home/user/.m2/repository -Dquarkus.http.host=0.0.0.0 -Dmaven.test.skip 
-    component: villains-runner
+    component: fights-runner
     workingDir: '/projects/quarkus-super-heroes-rest-fights'
     label: 'Fights Service - Live Dev Mode'
+    hotReloadCapable: true
+    group:
+      isDefault: true
+      kind: run
   id: fights-service-dev-mode
 - exec:
     commandLine: quarkus dev -Dquarkus.analytics.disabled=false -Dmaven.repo.local=/home/user/.m2/repository -Dquarkus.http.host=0.0.0.0 -Dmaven.test.skip 
     component: ui-runner
     workingDir: '/projects/quarkus-super-heroes-rest-fights'
     label: 'Heroes UI - Live Dev Mode'
+    hotReloadCapable: true
+    group:
+      isDefault: true
+      kind: run
   id: ui-dev-mode
 events:
   preStart:

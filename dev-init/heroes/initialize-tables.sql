@@ -1,7 +1,9 @@
 DROP DATABASE IF EXISTS heroes_database;
+DROP USER IF EXISTS superman;
+CREATE USER superman WITH PASSWORD 'superman';
 CREATE DATABASE heroes_database;
-
-\c heroes_database;
+ALTER DATABASE heroes_database OWNER TO superman;
+\c heroes_database superman;
 
 CREATE SEQUENCE hero_seq START 1 INCREMENT 50;
 
@@ -14,13 +16,6 @@ CREATE TABLE hero (
   powers TEXT,
   PRIMARY KEY (id)
 );
-
-DROP USER IF EXISTS superman;
-CREATE USER superman WITH PASSWORD 'superman';
-GRANT ALL PRIVILEGES ON DATABASE heroes_database TO superman;
-GRANT ALL PRIVILEGES ON SCHEMA public TO superman;
-GRANT ALL PRIVILEGES ON TABLE hero TO superman;
-GRANT ALL PRIVILEGES ON SEQUENCE hero_seq TO superman;
 
 -- A 100 record random sample from https://github.com/quarkusio/quarkus-super-heroes/blob/characterdata/all-heroes.sql
 INSERT INTO hero(id, name, otherName, picture, powers, level)
