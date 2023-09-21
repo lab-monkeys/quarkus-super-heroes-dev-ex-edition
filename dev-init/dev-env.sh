@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
 export UI_HTTP_PORT=8080
-export HEROES_PORT=8081
-export VILLAINS_PORT=8082
+export HERO_HOST=localhost
+export HERO_PORT=8081
+export VILLAIN_HOST=localhost
+export VILLAIN_PORT=8082
 export FIGHTS_PORT=8083
 
 function setUiEnv() {
@@ -39,10 +41,12 @@ function setFightsEnv() {
   export VILLAIN_HOST=localhost
   export DB_USER=superfight
   export DB_PWD=superfight
-  export DB_HOST=localhost
+  export DB_HOST="localhost:27017"
   export DB_SCHEMA=fights
   export CORS_ORIGINS="/.*/"
   export CORS_METHODS="GET,POST,DELETE"
+  export APICURIO_URL="http://localhost:8080/apis/registry/v2"
+  export KAFKA_BOOTSTRAP="PLAINTEXT://localhost:9092"
 }
 
 function setStatisticsEnv() {

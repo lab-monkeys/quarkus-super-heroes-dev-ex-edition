@@ -112,9 +112,32 @@ components:
       - name: postgres
         targetPort: 5432
         exposure: internal
+- name: apicurio
+  container:
+    image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/apicurio-registry-mem:2.4.2.Final
+    sourceMapping: /projects
+    env:
+    - name: REGISTRY_AUTH_ANONYMOUS_READ_ACCESS_ENABLED
+      value: "true"
+    - name: QUARKUS_HTTP_PORT
+      value: "8085"
+    endpoints:
+      - name: apicurio
+        targetPort: 8085
+        exposure: public
 - name: fights-db
   container:
     image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/mongodb:5.0
+    env:
+    - name: MONGO_INITDB_DATABASE
+      value: fights
+    - name: MONGO_INITDB_ROOT_USERNAME
+      value: super
+    - name: MONGO_INITDB_ROOT_PASSWORD
+      value: super
+    volumeMounts:
+      - name: mongodb
+        path: /data/db
     endpoints:
       - name: fights-db
         targetPort: 27017
@@ -128,7 +151,7 @@ components:
     - name: LOG_DIR
       value: /tmp/logs
     - name: KAFKA_ADVERTISED_LISTENERS
-      value: PLAINTEXT://fights-kafka:9092
+      value: PLAINTEXT://localhost:9092
     endpoints:
       - name: kafka
         targetPort: 9092
@@ -208,6 +231,9 @@ components:
 - volume:
     size: 2Gi
   name: prometheus-data
+- volume:
+    size: 1Gi
+  name: mongodb
 commands:
 - apply:
     component: oc-cli
@@ -217,13 +243,13 @@ commands:
     commandLine: psql -f initialize-tables.sql
     component: postgres
     workingDir: '${PROJECTS_ROOT}/quarkus-super-heroes-dev-ex-edition/dev-init/heroes/'
-    label: 'Initialize Heroes Database'
+    label: 'Heroes Service - Initialize Database'
   id: create-heroes-db
 - exec:
     commandLine: psql -f initialize-tables.sql
     component: postgres
     workingDir: '${PROJECTS_ROOT}/quarkus-super-heroes-dev-ex-edition/dev-init/villains/'
-    label: 'Initialize Villains Database'
+    label: 'Villains Service - Initialize Database'
   id: create-villains-db
 - exec:
     commandLine: ${PROJECT_SOURCE}/dev-init/dev-env.sh --heroes
