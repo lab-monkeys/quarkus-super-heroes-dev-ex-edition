@@ -309,7 +309,7 @@ commands:
 - exec:
     commandLine: ${PROJECT_SOURCE}/dev-init/dev-env.sh --ui
     component: dev-tools
-    workingDir: '${PROJECTS_ROOT}/quarkus-super-heroes-rest-fights'
+    workingDir: '${PROJECTS_ROOT}/quarkus-super-heroes-ui'
     label: 'Heroes UI - Live Dev Mode'
     hotReloadCapable: true
     group:

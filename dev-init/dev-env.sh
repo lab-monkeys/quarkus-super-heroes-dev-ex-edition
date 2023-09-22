@@ -6,15 +6,19 @@ export HERO_PORT=8081
 export VILLAIN_HOST=localhost
 export VILLAIN_PORT=8082
 export FIGHTS_PORT=8083
+export OTEL_URL=http://localhost:4317
 
 function setUiEnv() {
   export DEBUG_PORT=5005
   export APP_PORT=${UI_HTTP_PORT}
+  export CORS_ORIGINS="/.*/"
+  export CORS_METHODS="GET,POST,PUT,DELETE"
+  export API_BASE_URL=https://$(oc get route ${DEVWORKSPACE_ID}-${DEVWORKSPACE_COMPONENT_NAME}-${UI_HTTP_PORT}-https-ui -o jsonpath={.spec.host})
 }
 
 function setHeroesEnv() {
   export DEBUG_PORT=5007
-  export APP_PORT=${HEROES_PORT}
+  export APP_PORT=${HERO_PORT}
   export DB_USER=superman
   export DB_PWD=superman
   export DB_HOST=localhost
@@ -25,7 +29,7 @@ function setHeroesEnv() {
 
 function setVillainsEnv() {
   export DEBUG_PORT=5006
-  export APP_PORT=${VILLAINS_PORT}
+  export APP_PORT=${VILLAIN_PORT}
   export DB_USER=superbad
   export DB_PWD=superbad
   export DB_HOST=localhost

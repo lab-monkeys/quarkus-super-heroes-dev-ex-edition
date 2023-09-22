@@ -16,7 +16,7 @@
 			"path": "../quarkus-super-heroes-rest-fights"
 		},
 		{
-			"path": "../quarkus-super-heroes-events-statistics"
+			"path": "../quarkus-super-heroes-event-statistics"
 		}
 	],
 	"extensions": {
