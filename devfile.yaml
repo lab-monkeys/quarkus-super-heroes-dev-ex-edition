@@ -130,6 +130,7 @@ components:
 - name: fights-db
   container:
     image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/mongodb:5.0
+    mountSources: true
     env:
     - name: MONGO_INITDB_DATABASE
       value: fights
@@ -241,10 +242,6 @@ commands:
     component: oc-cli
     label: Copy OpenShift CLI
   id: cp-oc-cli
-- apply:
-    component: fights-db-init
-    label: Copy Init File for mongodb
-  id: fights-db-init
 - exec:
     commandLine: psql -f initialize-tables.sql
     component: postgres
@@ -257,6 +254,11 @@ commands:
     workingDir: '${PROJECTS_ROOT}/quarkus-super-heroes-dev-ex-edition/dev-init/villains/'
     label: 'Villains Service - Initialize Database'
   id: create-villains-db
+- exec:
+    commandLine: mongosh fights ${PROJECT_SOURCE}/dev-init/fights/initialize-database.js
+    component: fights-db
+    label: "Fights Service - Initialize Database"
+  id: init-fights-db
 - exec:
     commandLine: ${PROJECT_SOURCE}/dev-init/dev-env.sh --heroes
     component: dev-tools
