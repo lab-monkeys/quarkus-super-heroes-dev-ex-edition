@@ -51,9 +51,9 @@ components:
   container: 
     image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/dev-workspace-image:nested
     memoryRequest: 1Gi
-    memoryLimit: 6Gi
+    memoryLimit: 10Gi
     cpuRequest: 500m
-    cpuLimit: 2000m
+    cpuLimit: 4000m
     mountSources: true
     sourceMapping: /projects
     env:
