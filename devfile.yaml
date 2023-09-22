@@ -51,7 +51,7 @@ components:
   container: 
     image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/dev-workspace-image:nested
     memoryRequest: 1Gi
-    memoryLimit: 10Gi
+    memoryLimit: 12Gi
     cpuRequest: 500m
     cpuLimit: 4000m
     mountSources: true
@@ -134,9 +134,9 @@ components:
     - name: MONGO_INITDB_DATABASE
       value: fights
     - name: MONGO_INITDB_ROOT_USERNAME
-      value: super
+      value: superfight
     - name: MONGO_INITDB_ROOT_PASSWORD
-      value: super
+      value: superfight
     volumeMounts:
       - name: mongodb
         path: /data/db

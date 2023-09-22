@@ -13,7 +13,7 @@ function setUiEnv() {
   export APP_PORT=${UI_HTTP_PORT}
   export CORS_ORIGINS="/.*/"
   export CORS_METHODS="GET,POST,PUT,DELETE"
-  export API_BASE_URL=https://$(oc get route ${DEVWORKSPACE_ID}-${DEVWORKSPACE_COMPONENT_NAME}-${UI_HTTP_PORT}-https-ui -o jsonpath={.spec.host})
+  export API_BASE_URL=https://$(oc get route ${DEVWORKSPACE_ID}-${DEVWORKSPACE_COMPONENT_NAME}-${FIGHTS_PORT}-https-fights -o jsonpath={.spec.host})
 }
 
 function setHeroesEnv() {
