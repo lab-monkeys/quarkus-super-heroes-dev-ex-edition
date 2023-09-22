@@ -91,6 +91,21 @@ components:
         targetPort: 8084
         exposure: public
         protocol: https
+      - name: debug-ui
+        targetPort: 5005
+        exposure: none
+      - name: debug-villains
+        targetPort: 5006
+        exposure: none
+      - name: debug-heroes
+        targetPort: 5007
+        exposure: none
+      - name: debug-fights
+        targetPort: 5008
+        exposure: none
+      - name: debug-stats
+        targetPort: 5009
+        exposure: none
 - name: postgres
   container:
     image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/postgresql-15-c9s:c9s

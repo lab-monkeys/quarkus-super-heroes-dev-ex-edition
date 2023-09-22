@@ -2,7 +2,7 @@
 
 ## Create Container Images for Workspaces
 
-1. Login to you OpenShift Cluster as a non-admin user with self-provisioner rights
+1. Login to your OpenShift Cluster as a non-admin user with self-provisioner rights
 
 1. Clone this repo and create the container images for developer workspaces
 
@@ -12,6 +12,8 @@
    chmod +x ./dev-tool-images/setup-dev-images.sh
    ./dev-tool-images/setup-dev-images.sh
    ```
+
+1. Wait for the image builds and imports to complete.
 
 ## Create Developer Workspace
 
