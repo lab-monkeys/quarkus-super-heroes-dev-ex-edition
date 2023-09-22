@@ -6,6 +6,7 @@ export HERO_PORT=8081
 export VILLAIN_HOST=localhost
 export VILLAIN_PORT=8082
 export FIGHTS_PORT=8083
+export STATS_PORT=8084
 export OTEL_URL=http://localhost:4317
 
 function setUiEnv() {
@@ -55,6 +56,11 @@ function setFightsEnv() {
 
 function setStatisticsEnv() {
   export DEBUG_PORT=5009
+  export KAFKA_BOOTSTRAP="PLAINTEXT://localhost:9092"
+  export CORS_ORIGINS="/.*/"
+  export CORS_METHODS="GET,POST,DELETE"
+  export APICURIO_URL="http://localhost:8080/apis/registry/v2"
+  export APP_PORT=${STATS_PORT}
 }
 
 function startDevMode() {
@@ -80,7 +86,7 @@ do
       setFightsEnv
       startDevMode
     ;;
-    --statistics)
+    --stats)
       setStatisticsEnv
       startDevMode
     ;;

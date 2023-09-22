@@ -290,6 +290,16 @@ commands:
       kind: run
   id: fights-service-dev-mode
 - exec:
+    commandLine: ${PROJECT_SOURCE}/dev-init/dev-env.sh --stats
+    component: dev-tools
+    workingDir: '${PROJECTS_ROOT}/quarkus-super-heroes-event-statistics'
+    label: 'Fight Statistics - Live Dev Mode'
+    hotReloadCapable: true
+    group:
+      isDefault: true
+      kind: run
+  id: stats-dev-mode
+- exec:
     commandLine: ${PROJECT_SOURCE}/dev-init/dev-env.sh --ui
     component: dev-tools
     workingDir: '${PROJECTS_ROOT}/quarkus-super-heroes-ui'
