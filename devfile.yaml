@@ -115,6 +115,8 @@ components:
 - name: apicurio
   container:
     image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/apicurio-registry-mem:2.4.2.Final
+    memoryRequest: 128M
+    memoryLimit: 1Gi
     sourceMapping: /projects
     env:
     - name: REGISTRY_AUTH_ANONYMOUS_READ_ACCESS_ENABLED
