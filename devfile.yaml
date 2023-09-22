@@ -140,26 +140,10 @@ components:
     volumeMounts:
       - name: mongodb
         path: /data/db
-      - name: mongo-db-init
-        path: /docker-entrypoint-initdb.d
     endpoints:
       - name: fights-db
         targetPort: 27017
         exposure: internal
-    memoryRequest: 64M
-    memoryLimit: 256M
-- name: fights-db-init
-  container:
-    image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/dev-workspace-image:nested
-    mountSources: true
-    command:
-      - /bin/bash
-    args:
-      - '-c'
-      - 'cp ${PROJECT_SOURCE}/dev-init/fights/initialize-database.js /docker-entrypoint-initdb.d'
-    volumeMounts:
-      - name: mongo-db-init
-        path: /docker-entrypoint-initdb.d
     memoryRequest: 64M
     memoryLimit: 256M
 - name: fights-kafka
@@ -252,9 +236,6 @@ components:
 - volume:
     size: 1Gi
   name: mongodb
-- volume:
-    size: 64Mi
-  name: mongo-db-init
 commands:
 - apply:
     component: oc-cli
@@ -319,4 +300,4 @@ commands:
 events:
   preStart:
     - cp-oc-cli
-    - fights-db-init
+
