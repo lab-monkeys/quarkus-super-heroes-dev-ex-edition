@@ -48,6 +48,8 @@ projects:
       origin: https://github.com/lab-monkeys/quarkus-super-heroes-event-statistics.git
 components:
 - name: dev-tools
+  attributes:
+    pod-overrides: {"metadata": {"annotations": {"io.kubernetes.cri-o.Devices":"/dev/fuse,/dev/net/tun","io.openshift.nested-podman":""}}}
   container: 
     image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/dev-workspace-image:nested
     memoryRequest: 1Gi
@@ -93,19 +95,19 @@ components:
         protocol: https
       - name: debug-ui
         targetPort: 5005
-        exposure: none
+        exposure: internal
       - name: debug-villains
         targetPort: 5006
-        exposure: none
+        exposure: internal
       - name: debug-heroes
         targetPort: 5007
-        exposure: none
+        exposure: internal
       - name: debug-fights
         targetPort: 5008
-        exposure: none
+        exposure: internal
       - name: debug-stats
         targetPort: 5009
-        exposure: none
+        exposure: internal
 - name: postgres
   container:
     image: image-registry.openshift-image-registry.svc:5000/quarkus-super-heroes-dev-images/postgresql-15-c9s:c9s
@@ -261,68 +263,53 @@ commands:
     commandLine: psql -f initialize-tables.sql
     component: postgres
     workingDir: '${PROJECTS_ROOT}/quarkus-super-heroes-dev-ex-edition/dev-init/heroes/'
-    label: 'Heroes Service - Initialize Database'
+    label: 'DB Init - Heroes Service'
   id: create-heroes-db
 - exec:
     commandLine: psql -f initialize-tables.sql
     component: postgres
     workingDir: '${PROJECTS_ROOT}/quarkus-super-heroes-dev-ex-edition/dev-init/villains/'
-    label: 'Villains Service - Initialize Database'
+    label: 'DB Init - Villains Service'
   id: create-villains-db
 - exec:
     commandLine: mongosh fights ${PROJECT_SOURCE}/dev-init/fights/initialize-database.js
     component: fights-db
-    label: "Fights Service - Initialize Database"
+    label: "DB Init - Fights Service"
   id: init-fights-db
 - exec:
     commandLine: ${PROJECT_SOURCE}/dev-init/dev-env.sh --heroes
     component: dev-tools
     workingDir: '${PROJECTS_ROOT}/quarkus-super-heroes-rest-heroes'
-    label: 'Heroes Service - Live Dev Mode'
+    label: 'Run Dev Mode - Heroes Service'
     hotReloadCapable: true
-    group:
-      isDefault: true
-      kind: run
   id: heroes-service-dev-mode
 - exec:
     commandLine: ${PROJECT_SOURCE}/dev-init/dev-env.sh --villains
     component: dev-tools
     workingDir: '${PROJECTS_ROOT}/quarkus-super-heroes-rest-villains'
-    label: 'Villains Service - Live Dev Mode'
+    label: 'Run Dev Mode - Villains Service'
     hotReloadCapable: true
-    group:
-      isDefault: true
-      kind: run
   id: villains-service-dev-mode
 - exec:
     commandLine: ${PROJECT_SOURCE}/dev-init/dev-env.sh --fights
     component: dev-tools
     workingDir: '${PROJECTS_ROOT}/quarkus-super-heroes-rest-fights'
-    label: 'Fights Service - Live Dev Mode'
+    label: 'Run Dev Mode - Fights Service'
     hotReloadCapable: true
-    group:
-      isDefault: true
-      kind: run
   id: fights-service-dev-mode
 - exec:
     commandLine: ${PROJECT_SOURCE}/dev-init/dev-env.sh --stats
     component: dev-tools
     workingDir: '${PROJECTS_ROOT}/quarkus-super-heroes-event-statistics'
-    label: 'Fight Statistics - Live Dev Mode'
+    label: 'Run Dev Mode - Fight Statistics'
     hotReloadCapable: true
-    group:
-      isDefault: true
-      kind: run
   id: stats-dev-mode
 - exec:
     commandLine: ${PROJECT_SOURCE}/dev-init/dev-env.sh --ui
     component: dev-tools
     workingDir: '${PROJECTS_ROOT}/quarkus-super-heroes-ui'
-    label: 'Heroes UI - Live Dev Mode'
+    label: 'Run Dev Mode - Heroes UI'
     hotReloadCapable: true
-    group:
-      isDefault: true
-      kind: run
   id: ui-dev-mode
 events:
   preStart:
